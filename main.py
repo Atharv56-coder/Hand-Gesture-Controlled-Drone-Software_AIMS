@@ -57,7 +57,7 @@ while cap.isOpened():
 
             # print(landmarks_features[:4])
 
-    cv2.putText(img, f"ACTION: {current_action}", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(img, f"ACTION: {current_action}", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)
     if speed > 0:
         cv2.putText(img, f"SPEED: {speed}%", (20, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
