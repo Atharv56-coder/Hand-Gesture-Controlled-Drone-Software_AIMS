@@ -29,19 +29,15 @@ while cap.isOpened():
             for lm in hand_lms.landmark:
                 temp_list.extend([lm.x, lm.y])
 
-            # --- NORMALIZATION LOGIC ---
-            # 1. Convert to a base of 0 (Subtract wrist coordinates)
             base_x, base_y = temp_list[0], temp_list[1]
             normalized_features = []
             for i in range(0, len(temp_list), 2):
                 normalized_features.append(temp_list[i] - base_x)
                 normalized_features.append(temp_list[i+1] - base_y)
 
-            # 2. Scale values (Divide by max absolute value to keep range -1 to 1)
             max_val = max(map(abs, normalized_features))
             if max_val != 0:
                 normalized_features = [n / max_val for n in normalized_features]
-            # ---------------------------
 
             prediction = model.predict(np.array([normalized_features]), verbose=0)
             class_id = np.argmax(prediction)
