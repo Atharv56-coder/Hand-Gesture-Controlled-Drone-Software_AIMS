@@ -4,8 +4,8 @@ import math
 import numpy as np
 from tensorflow.keras.models import load_model # Added
 
-model = load_model('gesture_recognizer_3.h5')
-actions = ["STOP", "RIGHT", "FORWARD", "NONE", "SPEED", "LEFT", "DOWN", "UP", "BACKWARD"]
+model = load_model('hand_gesture_model_2.h5')
+actions = ["BACKWARD", "FORWARD", "LEFT", "DOWN", "UP", "NONE", "RIGHT", "SPEED", "STOP"]
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.8)
@@ -25,12 +25,25 @@ while cap.isOpened():
 
     if results.multi_hand_landmarks:
         for hand_lms in results.multi_hand_landmarks:
-            landmarks_features = []
+            temp_list = []
             for lm in hand_lms.landmark:
-                landmarks_features.extend([lm.x, lm.y])
-            
-            # PREDICTION
-            prediction = model.predict(np.array([landmarks_features]), verbose=0)
+                temp_list.extend([lm.x, lm.y])
+
+            # --- NORMALIZATION LOGIC ---
+            # 1. Convert to a base of 0 (Subtract wrist coordinates)
+            base_x, base_y = temp_list[0], temp_list[1]
+            normalized_features = []
+            for i in range(0, len(temp_list), 2):
+                normalized_features.append(temp_list[i] - base_x)
+                normalized_features.append(temp_list[i+1] - base_y)
+
+            # 2. Scale values (Divide by max absolute value to keep range -1 to 1)
+            max_val = max(map(abs, normalized_features))
+            if max_val != 0:
+                normalized_features = [n / max_val for n in normalized_features]
+            # ---------------------------
+
+            prediction = model.predict(np.array([normalized_features]), verbose=0)
             class_id = np.argmax(prediction)
             confidence = np.max(prediction)
 
