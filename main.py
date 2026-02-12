@@ -2,10 +2,10 @@ import cv2
 import mediapipe as mp
 import math
 import numpy as np
-from tensorflow.keras.models import load_model # Added
+from tensorflow.keras.models import load_model 
 
 model = load_model('hand_gesture_model_2.h5')
-actions = ["BACKWARD", "FORWARD", "LEFT", "DOWN", "UP", "NONE", "RIGHT", "SPEED", "STOP"]
+actions = ["BACKWARD", "FORWARD", "LEFT", "DOWN", "UP", "NONE", "RIGHT", "SPEED", "LAND", "TAKE-OFF"]
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.8)

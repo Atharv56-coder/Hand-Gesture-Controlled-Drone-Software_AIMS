@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('normalized_landmarks_2.csv')
+df = pd.read_csv('new_gesture_dataset_500_2.csv')
 
 df = df.dropna(subset=['label'])
 df['label'] = df['label'].astype(str)
@@ -50,5 +50,5 @@ history = model.fit(
     verbose=1
 )
 
-model.save('hand_gesture_model_2.h5')
+model.save('hand_gesture_model_2_test.h5')
 print("Model saved as hand_gesture_model.h5")
